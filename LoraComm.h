@@ -7,7 +7,7 @@
 class LoraMessage {
   public:
     LoraMessage();
-    LoraMessage(int toAddress, char *msg, int msgId, boolean needsAck);
+    LoraMessage(int toAddress, const char *msg, int msgId, boolean needsAck);
     boolean addReceived(char s);
     void init();
     char* getOutBuffer();
@@ -46,12 +46,12 @@ class LoraMessage {
 
 class LoraComm {
   public:
-    LoraComm(SoftwareSerial *port, void (*onMessageCb)(int address, char* msg, int snr, int rssi));
+    LoraComm(SoftwareSerial *port, void (*onMessageCb)(int address, const char* msg, int snr, int rssi));
     void setAckCb(void (*onAckCb)(int fromAddress, int msgId));
     void initNetwork(int networkId, int myAddress, char *cpin = "");
     void rawSend(int fromAddress, char *msg);
     void sendATCommand(char *msg);
-    int send(int toAddress, char *msg, boolean needAck=true);
+    int send(int toAddress, const char *msg, boolean needAck=true);
     void setVerbose(boolean verbose);
     void setResend(byte maxRetries, int resendWaitMillis);
     void loop();
@@ -60,7 +60,7 @@ class LoraComm {
 
   private:
     SoftwareSerial *m_port;
-    void (*m_onMessageCb)(int address, char* msg, int snr, int rssi);
+    void (*m_onMessageCb)(int address, const char* msg, int snr, int rssi);
     void (*m_onAckCb)(int fromAddress, int msgId);
     int m_msgId = 0;
     boolean m_verbose;

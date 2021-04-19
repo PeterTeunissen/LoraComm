@@ -1,6 +1,6 @@
 #include "LoraComm.h"
 
-LoraComm::LoraComm(SoftwareSerial *port,void (*onMessageCb)(int address, char* msg, int snr, int rssi)) {
+LoraComm::LoraComm(SoftwareSerial *port,void (*onMessageCb)(int address, const char* msg, int snr, int rssi)) {
   m_port = port;
   m_onMessageCb = onMessageCb;
   m_onAckCb = NULL;
@@ -45,7 +45,7 @@ void LoraComm::rawSend(int address, char *msg){
   Serial.println(m_buf);
 }
 
-int LoraComm::send(int toAddress, char *msg, boolean needsAck){
+int LoraComm::send(int toAddress, const char *msg, boolean needsAck){
   m_outMessage = new LoraMessage(toAddress, msg, ++m_msgId, needsAck);
   rawSend(toAddress, m_outMessage->getOutBuffer());
   m_inMessage->resetMessage();
@@ -127,7 +127,7 @@ LoraMessage::LoraMessage() {
   strcpy(m_msgType,"");
 }
 
-LoraMessage::LoraMessage(int toAddress, char *msg, int msgId, boolean needsAck) {
+LoraMessage::LoraMessage(int toAddress, const char *msg, int msgId, boolean needsAck) {
   m_address = toAddress;
   m_needsAck = needsAck;
   m_msgId = msgId;
