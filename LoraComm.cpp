@@ -312,6 +312,7 @@ boolean LoraMessage::addReceived(char s) {
           }
         }
       }
+      strcpy(m_raw,"");
     }
   } else {
     m_isComplete = false;
